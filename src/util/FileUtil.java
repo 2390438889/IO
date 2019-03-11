@@ -101,6 +101,11 @@ public class FileUtil {
         }
     }
 
+    /**
+     * NIO将输入流中的数据存到输出流所指向的文件中
+     * @param in
+     * @param out
+     */
     public static void streamSaveByNIO(InputStream in,FileOutputStream out){
 
         try(ReadableByteChannel rbc = Channels.newChannel(in);

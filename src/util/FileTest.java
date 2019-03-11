@@ -49,7 +49,7 @@ public class FileTest {
         FileUtil.moveDirs(new File("G:\\python1"),new File("F:\\a"));
     }
     public static void fileClassifier(){
-        FileUtil.fileClassiferByType(new File("F:\\aa"));
+        FileUtil.fileClassiferByType(new File("F:\\书籍 - 副本"));
     }
     public static void downFileByIOTest(){
         FileUtil.downFileByIO("http://www.555x.org/home/down/txt/id/44766", new File("F:\\aa"), "aa.txt");
@@ -66,8 +66,8 @@ public class FileTest {
         //copyDirsTest();
         //delDirsTest();
         //moveDirsTest();
-        //fileClassifier();
+        fileClassifier();
         //downFileByIOTest();
-        downFileByNIOTest();
+        //downFileByNIOTest();
     }
 }
