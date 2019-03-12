@@ -52,10 +52,10 @@ public class FileTest {
         FileUtil.fileClassiferByType(new File("F:\\书籍 - 副本"));
     }
     public static void downFileByIOTest(){
-        FileUtil.downFileByIO("http://www.555x.org/home/down/txt/id/44766", new File("F:\\aa"), "aa.txt");
+        FileUtil.downFileByIO("http://www.555x.org/home/down/txt/id_generator/44766", new File("F:\\aa"), "aa.txt");
     }
     public static void downFileByNIOTest(){
-        FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/id/44766", new File("F:\\aa"), "aa.txt");
+        FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/id_generator/44766", new File("F:\\aa"), "aa.txt");
     }
     public static void showFilesTest(){
         FileUtil.showDirs(new File("F:\\qycache"));
