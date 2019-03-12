@@ -43,7 +43,7 @@ public class FileTest {
         FileUtil.copyDirs(new File("F:\\书籍\\奥术神座.txt"),new File("F:\\a"));
     }
     public static void delDirsTest(){
-        FileUtil.delDirs(new File("F:\\aa"));
+        FileUtil.delDirs(new File("F:\\qycache - 副本"));
     }
     public static void moveDirsTest(){
         FileUtil.moveDirs(new File("G:\\python1"),new File("F:\\a"));
@@ -57,6 +57,9 @@ public class FileTest {
     public static void downFileByNIOTest(){
         FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/id/44766", new File("F:\\aa"), "aa.txt");
     }
+    public static void showFilesTest(){
+        FileUtil.showDirs(new File("F:\\qycache"));
+    }
     public static void main(String[] args) {
         //fileExistsTest();
         //bufferedInputStreamTest();
@@ -66,8 +69,14 @@ public class FileTest {
         //copyDirsTest();
         //delDirsTest();
         //moveDirsTest();
-        fileClassifier();
+        //fileClassifier();
         //downFileByIOTest();
         //downFileByNIOTest();
+        //showFilesTest();
+        FileUtil.recursiveProcess(new File("F:\\小说"),(f) -> {
+            if (f.length() < 1000){
+                System.out.println(f.getAbsolutePath());
+            }
+        });
     }
 }

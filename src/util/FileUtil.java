@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.function.Consumer;
 
 /**
  * @author Hearts
@@ -196,17 +197,16 @@ public class FileUtil {
      */
     public static void delDirs(File file){
 
-        if (file.exists()){
-            if (file.isDirectory()){
-                File[] files = file.listFiles();
-                for (File f : files) {
-                    delDirs(f);
-                }
-            }
-            file.delete();
+        recursiveProcess(file,(f) -> {
+            f.delete();
+        });
 
-        }
+    }
 
+    public static void showDirs(File file){
+        recursiveProcess(file,(f) -> {
+            System.out.println(f.getAbsolutePath());
+        });
     }
 
     /**
@@ -254,13 +254,30 @@ public class FileUtil {
 
         try {
             URL url = downPre(downUrl,dir);
-            streamSaveByIO(url.openStream(), new FileOutputStream(new File(dir, fileName)));
+            streamSaveByNIO(url.openStream(), new FileOutputStream(new File(dir, fileName)));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 递归处理所有文件
+     * @param file
+     * @param call
+     */
+    public static void recursiveProcess(File file,Consumer<File> call){
+
+        if (file.exists()){
+            if (file.isDirectory()){
+                for (File f:file.listFiles()){
+                    recursiveProcess(f,call);
+                }
+            }
+            call.accept(file);
         }
     }
 
