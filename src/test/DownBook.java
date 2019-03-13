@@ -21,7 +21,7 @@ public class DownBook {
     public static ExecutorService executorService;
 
     public static void pre(){
-        books = SQLUtil.queryAll("book");
+        books = SQLUtil.queryByTable("book");
         executorService = Executors.newFixedThreadPool(20);
     }
 
