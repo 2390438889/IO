@@ -1,8 +1,5 @@
-package id_generator;
+package util;
 
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 
 /**
  * tweeter的snowflake 移植到Java:

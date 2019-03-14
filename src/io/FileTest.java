@@ -1,4 +1,4 @@
-package util;
+package io;
 
 import java.io.*;
 
@@ -52,13 +52,17 @@ public class FileTest {
         FileUtil.fileClassiferByType(new File("J:\\下载"));
     }
     public static void downFileByIOTest(){
-        FileUtil.downFileByIO("http://www.555x.org/home/down/txt/id_generator/44766", new File("F:\\aa"), "aa.txt");
+        FileUtil.downFileByIO("http://www.555x.org/home/down/txt/util/44766", new File("F:\\aa"), "aa.txt");
     }
     public static void downFileByNIOTest(){
-        FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/id_generator/44766", new File("F:\\aa"), "aa.txt");
+        FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/util/44766", new File("F:\\aa"), "aa.txt");
     }
     public static void showFilesTest(){
         FileUtil.showDirs(new File("F:\\qycache"));
+    }
+
+    public static void fileToStringTest(){
+        System.out.println(FileUtil.readFileToString(new File("F:\\书籍\\奥术神座.txt")));
     }
     public static void main(String[] args) {
         //fileExistsTest();
@@ -69,14 +73,10 @@ public class FileTest {
         //copyDirsTest();
         //delDirsTest();
         //moveDirsTest();
-        fileClassifier();
+        //fileClassifier();
         //downFileByIOTest();
         //downFileByNIOTest();
         //showFilesTest();
-//        FileUtil.recursiveProcess(new File("F:\\小说"),(f) -> {
-//            if (f.length() < 1000){
-//                System.out.println(f.getAbsolutePath());
-//            }
-//        });
+        fileToStringTest();
     }
 }

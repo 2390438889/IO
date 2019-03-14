@@ -1,4 +1,4 @@
-package util;
+package io;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -288,6 +289,51 @@ public class FileUtil {
     public static void fileClassiferByType(File baseDir){
         fileClassifier.setBaseDir(baseDir);
         fileClassifier.process();
+    }
+
+    public static void readToWriteByIO(Reader reader,Writer writer){
+
+        try(BufferedReader br = new BufferedReader(reader);
+            BufferedWriter bw = new BufferedWriter(writer)){
+            char[] data = new char[1024];
+            int length = 0;
+            while((length = br.read(data))>0){
+                bw.write(data,0,length);
+            }
+            bw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将文件中的字符串读取出来
+     * @param file
+     * @return
+     */
+    public static String readFileToString(File file) {
+        String str = null;
+        StringWriter sw = new StringWriter();
+        try {
+            readToWriteByIO(new InputStreamReader(new FileInputStream(file)),sw);
+            str =  sw.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                sw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+           str = new String(str.getBytes("GB2312"),"GBK");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return str;
     }
 
 

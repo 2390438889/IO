@@ -1,7 +1,7 @@
 package test;
 
 import sql.SQLUtil;
-import util.FileUtil;
+import io.FileUtil;
 
 import java.io.File;
 import java.util.List;
