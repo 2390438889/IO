@@ -3,7 +3,7 @@ package sql;
 /**
  * @author Hearts
  * @date 2019/3/13
- * @desc
+ * @desc limit 参数
  */
 public class Limit {
 

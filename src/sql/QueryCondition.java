@@ -3,7 +3,7 @@ package sql;
 /**
  * @author Hearts
  * @date 2019/3/13
- * @desc
+ * @desc sql查询条件
  */
 public class QueryCondition {
 
