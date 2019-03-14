@@ -59,5 +59,7 @@ public class Test {
         updateByCondition();
         queryByConditionTest();
 
+        SQLUtil.disconnect();
+
     }
 }

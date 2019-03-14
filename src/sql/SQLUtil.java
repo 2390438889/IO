@@ -216,6 +216,12 @@ public class SQLUtil {
         }
     }
 
+    /**
+     * 根据筛选条件更新指定字段信息
+     * @param tableName
+     * @param updateValues
+     * @param conditions
+     */
     public static void updateByCondition(String tableName,Map<String,Object> updateValues,List<String> conditions){
 
         if(!checkTableName(tableName) || updateValues.size()<=0){
@@ -253,5 +259,15 @@ public class SQLUtil {
 
     }
 
-
+    /**
+     * 断开数据库连接
+     */
+    public static void disconnect(){
+        try {
+            conn.close();
+            conn=null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
