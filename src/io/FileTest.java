@@ -1,6 +1,9 @@
 package io;
 
+import util.StringUtil;
+
 import java.io.*;
+import java.util.*;
 
 /**
  * @author Hearts
@@ -62,7 +65,11 @@ public class FileTest {
     }
 
     public static void fileToStringTest(){
-        System.out.println(FileUtil.readFileToString(new File("F:\\书籍\\奥术神座.txt")));
+        String str = FileUtil.readFileToString(new File("src/io/test.txt"),"utf-8");
+        Map<String,List<String>> map = StringUtil.textStringParse(str);
+        map.entrySet().forEach(entry -> {
+            System.out.println(entry.getKey() +" --- "+entry.getValue());
+        });
     }
     public static void main(String[] args) {
         //fileExistsTest();

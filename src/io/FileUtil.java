@@ -311,26 +311,18 @@ public class FileUtil {
      * @param file
      * @return
      */
-    public static String readFileToString(File file) {
-        String str = null;
-        StringWriter sw = new StringWriter();
-        try {
-            readToWriteByIO(new InputStreamReader(new FileInputStream(file)),sw);
-            str =  sw.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                sw.close();
+    public static String readFileToString(File file,String charset) {
+        String str = "";
+        if (file!=null && file.isFile()){
+            byte[] data = new byte[(int) file.length()];
+            try(FileInputStream fis = new FileInputStream(file)){
+                fis.read(data);
+                str = new String(data,charset);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-           str = new String(str.getBytes("GB2312"),"GBK");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
 
         return str;
