@@ -1,0 +1,97 @@
+package io;
+
+import io.*;
+import util.FileUtil;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ * @author Hearts
+ * @date 2019/3/10
+ * @desc
+ */
+public class FileTest {
+
+    public static void fileExistsTest(){
+        File file = new File("I:\\a.txt");
+        System.out.println(file.exists());
+    }
+
+    public static void bufferedInputStreamTest(){
+        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream("F:\\书籍\\奥术神座.txt"))){
+            byte[] data = new byte[1024];
+            int i;
+            while ((i=bis.read(data))>0){
+
+                System.out.println(i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void copyFileToFileTest(){
+        FileUtil.copyFileToFile(new File("F:\\书籍\\奥术神座.txt"), new File("F:\\a.txt"));
+    }
+
+    public static void copyFileToDirTest(){
+        FileUtil.copyFileToDir(new File("F:\\书籍\\奥术神座.txt"), new File("F:\\a\\b"));
+    }
+    public static void copyDirTest(){
+        FileUtil.copyDir(new File("F:\\书籍"),new File("F:\\a"));
+    }
+    public static void copyDirsTest(){
+        FileUtil.copyDirs(new File("F:\\书籍\\奥术神座.txt"),new File("F:\\a"));
+    }
+    public static void delDirsTest(){
+        FileUtil.delDirs(new File("F:\\qycache - 副本"));
+    }
+    public static void moveDirsTest(){
+        FileUtil.moveDirs(new File("G:\\python1"),new File("F:\\a"));
+    }
+    public static void fileClassifier(String path){
+        FileUtil.fileClassiferByType(new File(path));
+    }
+    public static void downFileByIOTest(){
+        FileUtil.downFileByIO("http://www.555x.org/home/down/txt/main.java.util/44766", new File("F:\\aa"), "aa.txt");
+    }
+    public static void downFileByNIOTest(){
+        FileUtil.downFileByNIO("http://www.555x.org/home/down/txt/main.java.util/44766", new File("F:\\aa"), "aa.txt");
+    }
+    public static void showFilesTest(){
+        FileUtil.showDirs(new File("F:\\qycache"));
+    }
+
+    public static void main(String[] args) {
+        //fileExistsTest();
+        //bufferedInputStreamTest();
+        //copyFileToFileTest();
+        //copyFileToDirTest();
+        //copyDirTest();
+        //copyDirsTest();
+        //delDirsTest();
+        //moveDirsTest();
+        for (String arg : args) {
+            fileClassifier(arg);
+        }
+
+        File dir = new File("F:\\书籍\\pdf");
+
+        for (File file:new File("F:\\下载\\pdf").listFiles()){
+            if (!(new File(dir,file.getName()).exists())){
+                FileUtil.copyFileToDir(file, dir);
+            }
+        }
+
+        //删除临时文件
+        File temp = new File("F:\\下载","tmp");
+        FileUtil.delDirs(temp);
+        //downFileByIOTest();
+        //downFileByNIOTest();
+        //showFilesTest();
+        //fileToStringTest();
+    }
+}
