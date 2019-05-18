@@ -1,4 +1,4 @@
-package excel;
+package excel.typehandler;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 

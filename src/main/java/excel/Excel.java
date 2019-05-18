@@ -32,8 +32,8 @@ public class Excel<T> implements Serializable{
         columns = new ArrayList<>();
     }
 
-    public void registerSheet(String sheetName,Integer maxSize){
-        sheets.add(new Sheet<T>(clazz,sheetName,titles,columns,maxSize));
+    public void registerSheet(String sheetName,Integer maxSize,Integer dataStartRowIndex){
+        sheets.add(new Sheet<T>(clazz,sheetName,titles,columns,maxSize,dataStartRowIndex));
     }
 
     public void registerTitle(Title title){
@@ -44,10 +44,21 @@ public class Excel<T> implements Serializable{
         columns.add(column);
     }
 
-    public void excelInit(){
-        this.hssfWorkbook = new HSSFWorkbook();
+    public void createNewExcel(){
+        setHssfWorkbook(new HSSFWorkbook());
         for (Sheet<T> sheet : sheets) {
             sheet.createHssfSheet(this.hssfWorkbook);
+        }
+    }
+
+    private  void setHssfWorkbook(HSSFWorkbook hssfWorkbook){
+        this.hssfWorkbook = hssfWorkbook;
+    }
+
+    private void refresh(HSSFWorkbook hssfWorkbook){
+        setHssfWorkbook(hssfWorkbook);
+        for (Sheet<T> sheet : sheets) {
+            sheet.refrensh(hssfWorkbook.getSheet(sheet.getName()));
         }
     }
 
@@ -57,29 +68,34 @@ public class Excel<T> implements Serializable{
         for (Sheet<T> sheet : sheets) {
             sheet.validle(hssfWorkbook);
         }
-
     }
-    public HSSFWorkbook parseToExcel(final List<T> datas){
-        boolean isFill = false;
+    public void parseToExcel(final List<T> datas){
+        boolean isFill = true;
         List<T> cap = datas;
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         //创建每一个工作簿,如果达到最大容量则将数据填充到下一个工作簿,如果每个工作簿都填充满了,则抛出异常
         for (Sheet<T> sheet : sheets) {
             if (sheet.canParse()){
+                isFill = false;
                 if (sheet.surplusCapacity() >= cap.size()){
                     sheet.parseToExcel(cap);
                     break;
                 }else{
-                    final int index = sheet.surplusCapacity();
-                    sheet.parseToExcel(cap.subList(0,index));
-                    cap = cap.subList(index,cap.size());
+                    sheet.parseToExcel(cap.subList(0,sheet.surplusCapacity()));
+                    isFill = true;
                 }
             }
         }
-        if (cap.size() < datas.size()){
+        if (isFill){
             throw new RuntimeException("All Sheet is fill !!!");
         }
-        return hssfWorkbook;
+    }
+
+    public void importExcel(HSSFWorkbook hssfWorkbook){
+
+        validle(hssfWorkbook);
+
+        refresh(hssfWorkbook);
+
     }
 
     public List<List<T>> getExcelData(HSSFWorkbook hssfWorkbook){

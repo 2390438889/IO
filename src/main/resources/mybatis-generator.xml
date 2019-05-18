@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+    <context id="Mysql" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+
+
+        <!--自动设置分隔符-->
+        <!--<property name="autoDelimitKeywords" value="true"/>-->
+        <!-- 手动设置分隔符 -->
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <plugin type="javaDIYFree.generator.MybatisConfigPlugin">
+            <property name="targetPackage" value="config"/>
+            <property name="targetProject" value="src\main\resources"/>
+            <property name="attribute-jdbc-type" value="UNPOOLED"/>
+            <property name="property-jdbc-driver" value="com.mysql.jdbc.Driver"/>
+            <property name="property-jdbc-url" value="jdbc:mysql://localhost:3306/test"/>
+            <property name="property-jdbc-username" value="root"/>
+            <property name="property-jdbc-password" value="root"/>
+        </plugin>
+
+        <!--设置要使用java文件的字符编码-->
+        <!--<property name="javaFileEncoding" value="UTF-8"/>-->
+
+        <!--注释生成标签-->
+        <commentGenerator type="javaDIYFree.generator.SimpleCommentGenerator">
+            <!--阻止生成注释，默认为false-->
+            <property name="suppressAllComments" value="false"/>
+            <!--阻止生成的注释包含时间戳,默认为false-->
+            <!--<property name="suppressDate" value="true"/>-->
+            <property name="dateFormat" value="yyyy-MM-dd"/>
+            <!--注释是否添加表的备注信息，默认为false-->
+            <property name="addRemarkComments" value="true"/>
+
+            <property name="classCommentBanner" value="@author: hearts,@date: ${date},@desc: "/>
+
+            <property name="delimiter" value=","/>
+        </commentGenerator>
+
+
+        <!--jdbc连接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
+                        userId="root"
+                        password="root"
+                        >
+        </jdbcConnection>
+
+        <!--配置jdbc类型和java类型如何转化-->
+        <!--forceBigDecimals属性可以控制是否强制将 DECIMAL 和 NUMERIC 类型的 JDBC 字段转换为 Java 类型的-->
+        <!--java.math . BigDecimal ，默认值为 false，一般不需要配置-->
+        <!--<javaTypeResolver>-->
+            <!--<property name="forceBigDecimals" value="false" />-->
+        <!--</javaTypeResolver>-->
+
+        <!--控制生成的实体类-->
+        <!--targetPackage 生成实体类存放的报名
+        targetProject 生成实体类的项目路径-->
+        <javaModelGenerator targetPackage="javaDIYFree.model" targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="javaDIYFree.dao"  targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="user">
+        </table>
+
+        <!--<table tableName="t_jm_a_resume" domainObjectName="Resume"  enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false"/>-->
+
+
+
+    </context>
+</generatorConfiguration>

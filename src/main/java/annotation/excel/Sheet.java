@@ -15,4 +15,6 @@ public @interface Sheet {
 
     int maxSize() default 1000;
 
+    int dataStartRowIndex() default 0;
+
 }

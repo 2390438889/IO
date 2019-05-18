@@ -1,4 +1,4 @@
-package excel;
+package excel.typehandler;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 
@@ -7,7 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
  * @date 2019/5/5
  * @desc
  */
-public class StringTypeHandler extends BaseTypeHandler<String>{
+public class StringTypeHandler extends BaseTypeHandler<String> {
     @Override
     public void setCellValue(HSSFCell hssfCell, String value) {
         hssfCell.setCellValue(value);

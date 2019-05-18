@@ -33,16 +33,16 @@ public class Sheet<T> implements Serializable {
     private Integer dataInitRowIndex;
 
 
-
-
-    public Sheet(Class<T> clazz, String name, List<Title<T>> titles, List<Column<T>> columns, Integer maxSize) {
+    public Sheet(Class<T> clazz, String name, List<Title<T>> titles, List<Column<T>> columns, Integer maxSize, Integer dataStartRowIndex) {
         this.clazz = clazz;
         this.size = 0;
         this.name = name;
         this.titles = titles;
         this.columns = columns;
         this.maxSize = maxSize;
+        this.dataInitRowIndex = dataStartRowIndex;
     }
+
 
     public void setHssfSheet(HSSFSheet hssfSheet) {
         this.hssfSheet = hssfSheet;
@@ -119,5 +119,10 @@ public class Sheet<T> implements Serializable {
 
     public Integer surplusCapacity(){
         return maxSize - size;
+    }
+
+    public void refrensh(HSSFSheet sheet) {
+        size = sheet.getLastRowNum() - dataInitRowIndex;
+        this.setHssfSheet(sheet);
     }
 }

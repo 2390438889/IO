@@ -13,7 +13,7 @@ import java.util.Date;
  * @date 2019/5/5
  * @desc
  */
-@annotation.excel.Excel()
+@annotation.excel.Excel(sheets = {@Sheet(maxSize = 100)})
 public class User {
 
     @Column(name = "编号",colIndex = 0,cellType = CellType.NUMERIC)
@@ -22,7 +22,7 @@ public class User {
     @Column(name = "姓名",colIndex = 1,cellType = CellType.STRING)
     private String name;
 
-    @Column(name = "创建时间",colIndex = 2,cellType = CellType.STRING,typeHandler = "excel.DataFormatTypeHandler")
+    @Column(name = "创建时间",colIndex = 2,cellType = CellType.STRING,typeHandler = "excel.typehandler.DataFormatTypeHandler")
     private Date createTime;
 
     public User(Integer no, String name, Date createTime) {

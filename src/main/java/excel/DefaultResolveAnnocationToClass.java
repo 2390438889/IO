@@ -29,7 +29,7 @@ public class DefaultResolveAnnocationToClass implements BaseResolveAnnocationToC
         annotation.excel.Excel excelAnnotation = clazz.getAnnotation(annotation.excel.Excel.class);
         Sheet[] sheets = excelAnnotation.sheets();
         for (Sheet sheet : sheets) {
-            excel.registerSheet(sheet.name(),sheet.maxSize());
+            excel.registerSheet(sheet.name(),sheet.maxSize(),sheet.dataStartRowIndex());
         }
 
         Title[] titles = excelAnnotation.titles();
@@ -45,8 +45,6 @@ public class DefaultResolveAnnocationToClass implements BaseResolveAnnocationToC
                 excel.registerColumn(new excel.Column(column.name(),column.rowIndex(),column.colIndex(),field,column.cellType(),column.typeHandler()));
             }
         }
-
-        excel.excelInit();
         return excel;
     }
 }

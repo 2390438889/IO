@@ -24,17 +24,15 @@ import java.util.List;
  */
 public class DefaultResolveAnocationToClassTest {
 
-    @Test
+    /*@Test
     public void resolveTest(){
         BaseResolveAnnocationToClass baseResolveAnnocationToClass = new DefaultResolveAnnocationToClass();
 
         Excel<User> excel = baseResolveAnnocationToClass.parse(User.class);
 
-        List<User> users = new ArrayList<>();
+        excel.createNewExcel();
 
-        for (int i = 0; i < 100; i++) {
-            users.add(new User(i,"hello",new Date()));
-        }
+        List<User> users = generatorUser(10);
 
         excel.parseToExcel(users);
 
@@ -87,6 +85,40 @@ public class DefaultResolveAnocationToClassTest {
         }
     }
 
+    private List<User> generatorUser(int count) {
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            users.add(new User(i,"hello",new Date()));
+        }
+
+        return users;
+    }
+
+    @Test
+    public void parseDataTest(){
+        try {
+            BaseResolveAnnocationToClass baseResolveAnnocationToClass = new DefaultResolveAnnocationToClass();
+            Excel<User> excel = baseResolveAnnocationToClass.parse(User.class);
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(new FileInputStream("F:\\a.xls"));
+            excel.importExcel(hssfWorkbook);
+            try{
+                excel.parseToExcel(generatorUser(100));
+            } catch(RuntimeException ex){
+                ex.printStackTrace();
+            }
+            try {
+                hssfWorkbook.write(new File("F:\\a.xls"));
+                Runtime.getRuntime().exec("cmd /c start F:\\a.xls");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void setColDataCellStyle(HSSFSheet hssfSheet, CellStyle colDataCellStyle, List<Column<User>> columns) {
         for (Column<User> column : columns) {
             for (int i = column.getRowIndex()+1; i <= hssfSheet.getLastRowNum(); i++) {
@@ -133,6 +165,6 @@ public class DefaultResolveAnocationToClassTest {
             e.printStackTrace();
         }
     }
-
+*/
 
 }
