@@ -2,6 +2,7 @@ package io.file;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -11,6 +12,8 @@ import java.util.regex.Pattern;
  * @desc 创建文件过滤器
  */
 public class FileFilterUtils {
+
+    private static FileFilters fileFilters = new FileFilters();
 
     /**
      * 过滤所有文件类型的过滤器
@@ -68,11 +71,26 @@ public class FileFilterUtils {
     }
 
     /**
+     * 创建多文件过滤器
+     * @param filters
+     * @return
+     */
+    public static FileFilter createSingletonFiltersResult(List<FileFilter> filters){
+        fileFilters.clear();
+        fileFilters.addFilters(filters);
+        return fileFilters;
+    }
+
+    /**
      * 多文件过滤器
      */
     static class FileFilters implements  FileFilter{
 
         private List<FileFilter> fileFilters;
+
+        public FileFilters(){
+            fileFilters = new ArrayList<>();
+        }
 
         public void clear(){
             fileFilters.clear();

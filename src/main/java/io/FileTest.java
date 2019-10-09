@@ -1,10 +1,8 @@
 package io;
 
-import io.*;
 import util.FileUtil;
 
 import java.io.*;
-import java.util.*;
 
 /**
  * @author Hearts
@@ -53,7 +51,7 @@ public class FileTest {
         FileUtil.moveDirs(new File("G:\\python1"),new File("F:\\a"));
     }
     public static void fileClassifier(String path){
-        FileUtil.fileClassiferByType(new File(path));
+        FileUtil.classifierFiles(path);
     }
     public static void downFileByIOTest(){
         FileUtil.downFileByIO("http://www.555x.org/home/down/txt/main.java.util/44766", new File("F:\\aa"), "aa.txt");

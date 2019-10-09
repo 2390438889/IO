@@ -1,7 +1,6 @@
 package util;
 
-import io.Classifier;
-import io.FileClassifier;
+import io.file.FileFilterUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -9,6 +8,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -19,36 +19,6 @@ import java.util.function.Consumer;
 public final class FileUtil {
 
     private FileUtil(){}
-
-    public static FileClassifier fileClassifier = new FileClassifier(new File(""),new Classifier(){
-
-        public String getType(File file) {
-            String returnValue = "无";
-
-            if (file.isDirectory()){
-                returnValue = "文件夹";
-            }else{
-                int sufIndex = file.getName().lastIndexOf('.');
-                if (sufIndex >= 0 && sufIndex < file.getName().length()-1){
-                    returnValue = file.getName().substring(sufIndex+1);
-                }
-            }
-            return returnValue;
-        }
-
-        @Override
-        public void fileProcess(File file, String type) {
-            if (file.isFile()){
-                File dir = new File(file.getParentFile(),type);
-                if (!dir.exists()){
-                    dir.mkdir();
-                }
-                copyFileToFile(file, new File(dir, file.getName().replaceAll("([\\*@ \\[]*www.java1234.com[\\]]*)|[\\[《》 \\]@]*", "")));
-            }
-            file.delete();
-
-        }
-    });
 
     /**
      * 创建一个文件
@@ -139,6 +109,42 @@ public final class FileUtil {
     }
 
     /**
+     * 将文件夹内的文件按后缀名分类
+     * @param basePath
+     */
+    public static void classifierFiles(String basePath){
+        classifierFiles(new File(basePath));
+    }
+
+    /**
+     * 将文件夹内的文件按后缀名分类
+     * @param basePath
+     */
+    public static void classifierFiles(File basePath){
+
+        //获得该文件夹下所有的文件夹
+        File[] dirs = basePath.listFiles(FileFilterUtils.createDictionaryFilter());
+
+        for (File dir : dirs) {
+
+            FileFilter filter = FileFilterUtils.createSingletonFiltersResult(Arrays.asList(
+                    FileFilterUtils.createFileFilter(),FileFilterUtils.createRegexFilter(".*\\."+dir.getName())
+            ));
+
+            File[] files = basePath.listFiles(filter);
+
+            //将文件复制到对应文件夹中
+            for (int i = 0; i < files.length; i++) {
+                copyFileToDir(files[i],dir);
+                //删除该文件
+                files[i].delete();
+            }
+        }
+
+
+    }
+
+    /**
      * 将输入流中的数据存到输出流所指向的文件中
      * @param in
      * @param out
@@ -175,14 +181,14 @@ public final class FileUtil {
     /**
      * 复制文件到文件夹
      * @param oldFile
-     * @param newFile
+     * @param
      */
-    public static void copyFileToDir(File oldFile,File newFile){
-        if (!newFile.exists()){
-            newFile.mkdirs();
+    public static void copyFileToDir(File oldFile,File dirFile){
+        if (!dirFile.exists()){
+            dirFile.mkdirs();
         }
-        if (oldFile.isFile() && newFile.isDirectory()){
-            copyFileToFile(oldFile, new File(newFile, oldFile.getName()));
+        if (oldFile.isFile() && dirFile.isDirectory()){
+            copyFileToFile(oldFile, new File(dirFile, oldFile.getName()));
         }
     }
 
@@ -228,7 +234,7 @@ public final class FileUtil {
      */
     public static void moveFile(File oldFile,File newFile){
         if (oldFile.exists()){
-            copyFileToDir(oldFile,newFile);
+            copyFileToDir(oldFile, newFile);
             oldFile.delete();
         }
     }
@@ -336,14 +342,6 @@ public final class FileUtil {
         }
     }
 
-    /**
-     * 将文件夹内的文件按后缀名分类
-     * @param baseDir
-     */
-    public static void fileClassiferByType(File baseDir){
-        fileClassifier.setBaseDir(baseDir);
-        fileClassifier.process();
-    }
 
     public static void readToWriteByIO(Reader reader,Writer writer){
 
