@@ -78,17 +78,6 @@ public class FileTest {
             fileClassifier(arg);
         }
 
-        File dir = new File("F:\\书籍\\pdf");
-
-        for (File file:new File("F:\\下载\\pdf").listFiles()){
-            if (!(new File(dir,file.getName()).exists())){
-                FileUtil.copyFileToDir(file, dir);
-            }
-        }
-
-        //删除临时文件
-        File temp = new File("F:\\下载","tmp");
-        FileUtil.delDirs(temp);
         //downFileByIOTest();
         //downFileByNIOTest();
         //showFilesTest();

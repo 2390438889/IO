@@ -43,10 +43,10 @@ public final class FileUtil {
                 if (!dir.exists()){
                     dir.mkdir();
                 }
-                moveDirs(file,dir);
-            }else if (file.isDirectory() && file.list().length == 0){
-                file.delete();
+                copyFileToFile(file, new File(dir, file.getName().replaceAll("([\\*@ \\[]*www.java1234.com[\\]]*)|[\\[《》 \\]@]*", "")));
             }
+            file.delete();
+
         }
     });
 
