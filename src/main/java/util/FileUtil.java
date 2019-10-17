@@ -9,6 +9,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -16,7 +18,15 @@ import java.util.function.Consumer;
  * @date 2019/3/10
  * @desc 文件处理工具
  */
+
+
 public final class FileUtil {
+
+    public interface FileClassifyRule{
+
+        String rule(File file);
+
+    }
 
     private FileUtil(){}
 
@@ -112,33 +122,42 @@ public final class FileUtil {
      * 将文件夹内的文件按后缀名分类
      * @param basePath
      */
-    public static void classifierFiles(String basePath){
-        classifierFiles(new File(basePath));
+    public static void classifierFiles(String basePath,FileClassifyRule rule){
+        classifierFiles(new File(basePath),rule);
     }
 
     /**
      * 将文件夹内的文件按后缀名分类
      * @param basePath
      */
-    public static void classifierFiles(File basePath){
 
-        //获得该文件夹下所有的文件夹
+    public static void classifierFiles(File basePath,FileClassifyRule rule){
+
+        //获取所有文件
+        File[] files = basePath.listFiles(FileFilterUtils.createFileFilter());
+
+        Map<String,File> createdDirName = new HashMap<>();
+
+        //获取所有的文件夹对象
         File[] dirs = basePath.listFiles(FileFilterUtils.createDictionaryFilter());
 
-        for (File dir : dirs) {
+        //将已经存在的文件夹记录到map中
+        Arrays.stream(dirs).forEach((f)->{
+            createdDirName.put(f.getName(),f);
+        });
 
-            FileFilter filter = FileFilterUtils.createSingletonFiltersResult(Arrays.asList(
-                    FileFilterUtils.createFileFilter(),FileFilterUtils.createRegexFilter(".*\\."+dir.getName())
-            ));
-
-            File[] files = basePath.listFiles(filter);
-
-            //将文件复制到对应文件夹中
-            for (int i = 0; i < files.length; i++) {
-                copyFileToDir(files[i],dir);
-                //删除该文件
-                files[i].delete();
+        for (int i = 0; i < files.length; i++) {
+            final String suffix = rule.rule(files[i]);
+            File dir = createdDirName.get(suffix);
+            if (dir == null){
+                dir = new File(basePath,suffix);
+                //如果该文件夹不存在，则先创建该文件夹
+                createdDirName.put(suffix,dir);
+                dir.mkdir();
             }
+            copyFileToDir(files[i],dir);
+            //删除文件
+            files[i].delete();
         }
 
 

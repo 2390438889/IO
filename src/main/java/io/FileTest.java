@@ -1,6 +1,7 @@
 package io;
 
 import util.FileUtil;
+import util.StringUtil;
 
 import java.io.*;
 
@@ -51,7 +52,16 @@ public class FileTest {
         FileUtil.moveDirs(new File("G:\\python1"),new File("F:\\a"));
     }
     public static void fileClassifier(String path){
-        FileUtil.classifierFiles(path);
+        FileUtil.classifierFiles(path, new FileUtil.FileClassifyRule() {
+            @Override
+            public String rule(File file) {
+                final long size = file.length()/1024;
+                System.out.println("正在移动    "+
+                        "    "+file.getName()+
+                        "    "+size+"KB|");
+                return StringUtil.getSuffix(file.getName(),".");
+            }
+        });
     }
     public static void downFileByIOTest(){
         FileUtil.downFileByIO("http://www.555x.org/home/down/txt/main.java.util/44766", new File("F:\\aa"), "aa.txt");
@@ -74,6 +84,7 @@ public class FileTest {
         //moveDirsTest();
         for (String arg : args) {
             fileClassifier(arg);
+            System.out.println(arg+"  处理完毕");
         }
 
         //downFileByIOTest();
