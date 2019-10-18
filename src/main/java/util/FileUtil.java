@@ -119,7 +119,7 @@ public final class FileUtil {
     }
 
     /**
-     * 将文件夹内的文件按后缀名分类
+     * 将文件夹内的文件按指定规则分类
      * @param basePath
      */
     public static void classifierFiles(String basePath,FileClassifyRule rule){
@@ -147,12 +147,12 @@ public final class FileUtil {
         });
 
         for (int i = 0; i < files.length; i++) {
-            final String suffix = rule.rule(files[i]);
-            File dir = createdDirName.get(suffix);
+            final String type = rule.rule(files[i]);
+            File dir = createdDirName.get(type);
             if (dir == null){
-                dir = new File(basePath,suffix);
+                dir = new File(basePath,type);
                 //如果该文件夹不存在，则先创建该文件夹
-                createdDirName.put(suffix,dir);
+                createdDirName.put(type,dir);
                 dir.mkdir();
             }
             copyFileToDir(files[i],dir);
@@ -431,7 +431,6 @@ public final class FileUtil {
         }finally {
             try {
                 fileOutputStream.close();
-
                 byteArrayInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();

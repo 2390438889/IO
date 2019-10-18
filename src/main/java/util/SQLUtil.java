@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
  */
 public class SQLUtil {
 
-    private static final String  URL = "jdbc:mysql://localhost:3306/";
+    private static String  URL = "jdbc:mysql://localhost:3306/";
 
-    private static final String USERNAME= "root";
+    private static String USERNAME= "root";
 
-    private static final String PASSWORD = "root";
+    private static String PASSWORD = "root";
 
-    private static final String DATABASE_NAME = "main/java/test";
+    private static String DATABASE_NAME = "main/java/test";
 
     private static Connection conn;
 
@@ -38,10 +38,25 @@ public class SQLUtil {
     }
 
     /**
+     * 断开数据库链接
+     */
+    public static void disconnect(){
+        try {
+            if (!conn.isClosed()){
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 连接数据库
      * @return
      */
     public static boolean connect(String url,String username,String password,String dataBaseName){
+        //如果已连接数据库则先断开数据库
+        disconnect();
         try {
             conn = DriverManager.getConnection(url+dataBaseName,username,password);
             stmt = conn.createStatement();
@@ -205,7 +220,7 @@ public class SQLUtil {
 
             sql.append(" WHERE  ");
 
-            sql.append(String.join(" and ",conditions));
+            sql.append(String.join(" AND ",conditions));
         }
 
         System.out.println(sql);
@@ -243,7 +258,7 @@ public class SQLUtil {
 
         if (conditions != null && conditions.size()>0){
             sql.append(" WHERE ");
-            sql.append(String.join(" and ",conditions));
+            sql.append(String.join(" AND ",conditions));
         }
 
         System.out.println(sql);
@@ -260,15 +275,4 @@ public class SQLUtil {
 
     }
 
-    /**
-     * 断开数据库连接
-     */
-    public static void disconnect(){
-        try {
-            conn.close();
-            conn=null;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
